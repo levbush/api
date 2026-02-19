@@ -8,7 +8,7 @@ from arcade.gui import UIManager, UIAnchorLayout, UIBoxLayout, UIFlatButton
 SCREEN_WIDTH, SCREEN_HEIGHT = arcade.window_commands.get_display_size()
 WINDOW_TITLE = "MAP"
 ADD_ZOOM = 0.1
-STEP = 0.2
+STEP = SCREEN_WIDTH
 MAP_FILE = "map.png"
 
 
@@ -50,13 +50,7 @@ class GameView(arcade.Window):
 
         arcade.draw_texture_rect(
             self.background,
-            arcade.LBWH(
-                (self.width - self.background.width) // 2,
-                (self.height - self.background.height) // 2,
-                self.background.width,
-                self.background.height
-            ),
-        )
+            arcade.LBWH(SCREEN_WIDTH / 2 - SCREEN_HEIGHT / 2, 0, SCREEN_HEIGHT, SCREEN_HEIGHT))
         self.manager.draw()
 
     def get_image(self):
@@ -65,7 +59,7 @@ class GameView(arcade.Window):
         ll_spn = f'll={self.lon},{self.lat}&spn={self.spn[0]},{self.spn[1]}'
         # Готовим запрос.
 
-        map_request = f"{server_address}{ll_spn}&apikey={api_key}&theme={'light' if self.theme_white else 'dark'}&maptype={self.maptypes[self.curr_maptype]}"
+        map_request = f"{server_address}{ll_spn}&apikey={api_key}&theme={'light' if self.theme_white else 'dark'}&maptype={self.maptypes[self.curr_maptype]}&size=450,450&lang=ru_RU"
         print(map_request)
         response = requests.get(map_request)
 
