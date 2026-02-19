@@ -11,6 +11,8 @@ MAP_FILE = "map.png"
 
 class GameView(arcade.Window):
     def setup(self):
+        self.lon = input("Введите lon: ")
+        self.lat = input("Введите lat: ")
         self.get_image()
 
     def on_draw(self):
@@ -29,8 +31,6 @@ class GameView(arcade.Window):
     def get_image(self):
         server_address = 'https://static-maps.yandex.ru/v1?'
         api_key = '0680ad62-62c5-40bb-93fe-f72f890c42df'
-        self.lon = input("Введите lon: ")
-        self.lat = input("Введите lat: ")
         self.spn = [60, 40]
         ll_spn = f'll={self.lon},{self.lat}&spn={self.spn[0]},{self.spn[1]}'
         # Готовим запрос.
@@ -52,10 +52,10 @@ class GameView(arcade.Window):
         self.background = arcade.load_texture(MAP_FILE)
 
     def on_key_press(self, key, modifiers):
-        if key == arcade.key.PgUp:
+        if key == arcade.key.UP:
             self.spn[0] += 1
             self.spn[1] += 1
-        if key == arcade.key.PgDown:
+        if key == arcade.key.DOWN:
             self.spn[0] -= 1
             self.spn[1] -= 1
         self.get_image()
