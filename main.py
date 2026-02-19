@@ -3,12 +3,11 @@ import sys
 import requests
 import arcade
 from config import STATIC_API_KEY, GEOCODER_API_KEY
-from arcade.gui import UIManager, UIAnchorLayout, UIBoxLayout, UIFlatButton
+from arcade.gui import UIManager, UIAnchorLayout, UIBoxLayout, UIFlatButton, UIInputText
 
 SCREEN_WIDTH, SCREEN_HEIGHT = arcade.window_commands.get_display_size()
 WINDOW_TITLE = "MAP"
-ADD_ZOOM = 0.1
-STEP = SCREEN_WIDTH
+ADD_ZOOM = 0.005
 MAP_FILE = "map.png"
 
 
@@ -17,7 +16,7 @@ class GameView(arcade.Window):
         super().__init__(*args)
         self.manager = UIManager()
         self.anchor_layout = UIAnchorLayout()
-        self.box_layout = UIBoxLayout()
+        self.box_layout = UIBoxLayout(vertical=False)
         
         self.theme_button = UIFlatButton()
         self.theme_button.text = 'Change theme'
@@ -28,9 +27,13 @@ class GameView(arcade.Window):
         self.maptype_button.text = 'Change map type'
         self.maptype_button.on_click = lambda _: self.change_maptype()
         self.maptype_button.width = 300
+
+        self.search_query_area = UIInputText()
+        self.search_query_area.width = 400
         
         self.box_layout.add(self.theme_button)
         self.box_layout.add(self.maptype_button)
+        self.box_layout.add(self.search_query_area)
         self.anchor_layout.add(self.box_layout, anchor_y='bottom', align_y=50)
         self.manager.add(self.anchor_layout)
         self.manager.enable()
@@ -76,14 +79,14 @@ class GameView(arcade.Window):
         self.background = arcade.load_texture(MAP_FILE)
 
     def on_key_press(self, key, modifiers):
-        if arcade.key.LEFT == key or arcade.key.A == key:
-            self.lon -= STEP
-        if arcade.key.RIGHT == key or arcade.key.D == key:
-            self.lon += STEP
-        if arcade.key.UP == key or arcade.key.W == key:
-            self.lat += STEP
-        if arcade.key.DOWN == key or arcade.key.S == key:
-            self.lat -= STEP
+        if arcade.key.LEFT == key:
+            self.lon -= self.spn[0]
+        if arcade.key.RIGHT == key:
+            self.lon += self.spn[0]
+        if arcade.key.UP == key:
+            self.lat += self.spn[1]
+        if arcade.key.DOWN == key:
+            self.lat -= self.spn[1]
         
         if key == arcade.key.PAGEDOWN:
             self.spn[0] += ADD_ZOOM
