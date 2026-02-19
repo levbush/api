@@ -30,7 +30,7 @@ class GameView(arcade.Window):
         server_address = 'https://static-maps.yandex.ru/v1?'
         api_key = '0680ad62-62c5-40bb-93fe-f72f890c42df'
         lon = input("Введите lon: ")
-        lat = input("Введите lon: ")
+        lat = input("Введите lat: ")
         ll_spn = f'll={lon},{lat}&spn=60,40'
         # Готовим запрос.
 
