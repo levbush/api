@@ -8,6 +8,7 @@ from arcade.gui import UIManager, UIAnchorLayout, UIBoxLayout, UIFlatButton, UII
 SCREEN_WIDTH, SCREEN_HEIGHT = arcade.window_commands.get_display_size()
 WINDOW_TITLE = "MAP"
 ADD_ZOOM = 0.005
+ADD_ZOOM = 0.005
 MAP_FILE = "map.png"
 
 
@@ -43,6 +44,7 @@ class GameView(arcade.Window):
         self.curr_maptype = 0
 
     def setup(self):
+        self.keys_pressed = set()
         self.lon = float(input("Введите lon: "))
         self.lat = float(input("Введите lat: "))
         self.spn = [20, 20]
@@ -79,19 +81,21 @@ class GameView(arcade.Window):
         self.background = arcade.load_texture(MAP_FILE)
 
     def on_key_press(self, key, modifiers):
-        if arcade.key.LEFT == key:
+        self.keys_pressed.add(key)
+        
+        if arcade.key.LEFT in self.keys_pressed or arcade.key.A in self.keys_pressed:
             self.lon -= self.spn[0]
-        if arcade.key.RIGHT == key:
+        if arcade.key.RIGHT in self.keys_pressed or arcade.key.D in self.keys_pressed:
             self.lon += self.spn[0]
-        if arcade.key.UP == key:
+        if arcade.key.UP in self.keys_pressed or arcade.key.W in self.keys_pressed:
             self.lat += self.spn[1]
-        if arcade.key.DOWN == key:
+        if arcade.key.DOWN in self.keys_pressed or arcade.key.S in self.keys_pressed:
             self.lat -= self.spn[1]
         
-        if key == arcade.key.PAGEDOWN:
+        if arcade.key.PAGEDOWN in self.keys_pressed:
             self.spn[0] += ADD_ZOOM
             self.spn[1] += ADD_ZOOM
-        if key == arcade.key.PAGEUP:
+        if arcade.key.PAGEUP in self.keys_pressed:
             self.spn[0] -= ADD_ZOOM
             self.spn[1] -= ADD_ZOOM
 
@@ -106,7 +110,11 @@ class GameView(arcade.Window):
             self.spn = 40
             
         os.remove(MAP_FILE)
-        self.get_image()
+        self.get_image()    
+
+    def on_key_release(self, key, modifiers):
+        if key in self.keys_pressed:
+            self.keys_pressed.remove(key)
 
     def change_theme(self):
         self.theme_white = not self.theme_white
