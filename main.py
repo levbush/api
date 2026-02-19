@@ -8,7 +8,6 @@ from arcade.gui import UIManager, UIAnchorLayout, UIBoxLayout, UIFlatButton
 SCREEN_WIDTH, SCREEN_HEIGHT = arcade.window_commands.get_display_size()
 WINDOW_TITLE = "MAP"
 ADD_ZOOM = 0.1
-STEP = SCREEN_WIDTH
 MAP_FILE = "map.png"
 
 
@@ -77,13 +76,13 @@ class GameView(arcade.Window):
 
     def on_key_press(self, key, modifiers):
         if arcade.key.LEFT == key or arcade.key.A == key:
-            self.lon -= STEP
+            self.lon -= self.spn[0]
         if arcade.key.RIGHT == key or arcade.key.D == key:
-            self.lon += STEP
+            self.lon += self.spn[0]
         if arcade.key.UP == key or arcade.key.W == key:
-            self.lat += STEP
+            self.lat += self.spn[1]
         if arcade.key.DOWN == key or arcade.key.S == key:
-            self.lat -= STEP
+            self.lat -= self.spn[1]
         
         if key == arcade.key.PAGEDOWN:
             self.spn[0] += ADD_ZOOM
