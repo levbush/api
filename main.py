@@ -29,9 +29,10 @@ class GameView(arcade.Window):
     def get_image(self):
         server_address = 'https://static-maps.yandex.ru/v1?'
         api_key = '0680ad62-62c5-40bb-93fe-f72f890c42df'
-        lon = input("Введите lon: ")
-        lat = input("Введите lat: ")
-        ll_spn = f'll={lon},{lat}&spn=60,40'
+        self.lon = input("Введите lon: ")
+        self.lat = input("Введите lat: ")
+        self.spn = [60, 40]
+        ll_spn = f'll={self.lon},{self.lat}&spn={self.spn[0]},{self.spn[1]}'
         # Готовим запрос.
 
         map_request = f"{server_address}{ll_spn}&apikey={api_key}"
@@ -49,6 +50,12 @@ class GameView(arcade.Window):
             file.write(response.content)
 
         self.background = arcade.load_texture(MAP_FILE)
+
+    def on_key_press(self, key, modifiers):
+        if key == arcade.key.PgUp:
+            self.spn[0], self.spn[1] += 1, 1
+        if key == arcade.key.PgDown:
+            self.spn[0], self.spn[1] -= 1, 1
 
 
 def main():
