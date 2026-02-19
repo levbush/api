@@ -56,7 +56,7 @@ class GameView(arcade.Window):
             self.spn[0], self.spn[1] += 1, 1
         if key == arcade.key.PgDown:
             self.spn[0], self.spn[1] -= 1, 1
-
+        self.get_image()
 
 def main():
     gameview = GameView(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE)
