@@ -29,7 +29,9 @@ class GameView(arcade.Window):
     def get_image(self):
         server_address = 'https://static-maps.yandex.ru/v1?'
         api_key = '0680ad62-62c5-40bb-93fe-f72f890c42df'
-        ll_spn = 'll=133.7751,-25.2744&spn=60,40'
+        lon = input("Введите lon: ")
+        lat = input("Введите lon: ")
+        ll_spn = f'll={lon},{lat}&spn=60,40'
         # Готовим запрос.
 
         map_request = f"{server_address}{ll_spn}&apikey={api_key}"
