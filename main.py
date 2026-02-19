@@ -3,7 +3,7 @@ import sys
 import requests
 import arcade
 from config import STATIC_API_KEY, GEOCODER_API_KEY
-
+from arcade.gui import UIManager, UIAnchorLayout, UIBoxLayout, UIFlatButton
 
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
@@ -12,6 +12,21 @@ MAP_FILE = "map.png"
 
 
 class GameView(arcade.Window):
+    def __init__(self, *args):
+        super().__init__(*args)
+        self.manager = UIManager()
+        self.anchor_layout = UIAnchorLayout()
+        self.box_layout = UIBoxLayout()
+        self.button = UIFlatButton()
+        self.button.text = 'Change theme'
+        self.button.on_click = lambda _: self.change_theme()
+        self.box_layout.add(self.button)
+        self.anchor_layout.add(self.box_layout, anchor_y='bottom', align_y=50)
+        self.manager.add(self.anchor_layout)
+        self.manager.enable()
+
+        self.theme_white = True
+
     def setup(self):
         self.lon = input("Введите lon: ")
         self.lat = input("Введите lat: ")
@@ -30,6 +45,7 @@ class GameView(arcade.Window):
                 self.background.height
             ),
         )
+        self.manager.draw()
 
     def get_image(self):
         server_address = 'https://static-maps.yandex.ru/v1?'
@@ -37,7 +53,7 @@ class GameView(arcade.Window):
         ll_spn = f'll={self.lon},{self.lat}&spn={self.spn[0]},{self.spn[1]}'
         # Готовим запрос.
 
-        map_request = f"{server_address}{ll_spn}&apikey={api_key}"
+        map_request = f"{server_address}{ll_spn}&apikey={api_key}&theme={'light' if self.theme_white else 'dark'}"
         print(map_request)
         response = requests.get(map_request)
 
@@ -61,6 +77,10 @@ class GameView(arcade.Window):
             self.spn[0] -= 1
             self.spn[1] -= 1
         os.remove(MAP_FILE)
+        self.get_image()
+
+    def change_theme(self):
+        self.theme_white = not self.theme_white
         self.get_image()
 
 def main():
