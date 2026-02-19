@@ -5,8 +5,7 @@ import arcade
 from config import STATIC_API_KEY, GEOCODER_API_KEY
 from arcade.gui import UIManager, UIAnchorLayout, UIBoxLayout, UIFlatButton
 
-WINDOW_WIDTH = 1280
-WINDOW_HEIGHT = 720
+SCREEN_WIDTH, SCREEN_HEIGHT = arcade.window_commands.get_display_size()
 WINDOW_TITLE = "MAP"
 ADD_ZOOM = 0.1
 STEP = 0.2
@@ -106,7 +105,7 @@ class GameView(arcade.Window):
         self.get_image()
 
 def main():
-    gameview = GameView(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE)
+    gameview = GameView(SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE)
     gameview.setup()
     arcade.run()
     # Удаляем за собой файл с изображением.
