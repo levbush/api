@@ -76,6 +76,17 @@ class GameView(arcade.Window):
         if key == arcade.key.PAGEDOWN:
             self.spn[0] -= 1
             self.spn[1] -= 1
+
+        if self.spn[0] <= 1:
+            self.spn = 1
+        elif self.spn[0] >= 70:
+            self.spn = 70
+        
+        if self.spn[1] <= 1:
+            self.spn = 1
+        elif self.spn[1] >= 70:
+            self.spn = 70
+            
         os.remove(MAP_FILE)
         self.get_image()
 
