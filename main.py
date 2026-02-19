@@ -8,6 +8,8 @@ from arcade.gui import UIManager, UIAnchorLayout, UIBoxLayout, UIFlatButton
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
 WINDOW_TITLE = "MAP"
+ADD_ZOOM = 0.1
+STEP = 0.2
 MAP_FILE = "map.png"
 
 
@@ -28,9 +30,9 @@ class GameView(arcade.Window):
         self.theme_white = True
 
     def setup(self):
-        self.lon = input("Введите lon: ")
-        self.lat = input("Введите lat: ")
-        self.spn = [60, 40]
+        self.lon = float(input("Введите lon: "))
+        self.lat = float(input("Введите lat: "))
+        self.spn = [20, 20]
         self.get_image()
 
     def on_draw(self):
@@ -70,22 +72,31 @@ class GameView(arcade.Window):
         self.background = arcade.load_texture(MAP_FILE)
 
     def on_key_press(self, key, modifiers):
-        if key == arcade.key.PAGEUP:
-            self.spn[0] += 1
-            self.spn[1] += 1
+        if arcade.key.LEFT == key or arcade.key.A == key:
+            self.lon -= STEP
+        if arcade.key.RIGHT == key or arcade.key.D == key:
+            self.lon += STEP
+        if arcade.key.UP == key or arcade.key.W == key:
+            self.lat += STEP
+        if arcade.key.DOWN == key or arcade.key.S == key:
+            self.lat -= STEP
+        
         if key == arcade.key.PAGEDOWN:
-            self.spn[0] -= 1
-            self.spn[1] -= 1
+            self.spn[0] += ADD_ZOOM
+            self.spn[1] += ADD_ZOOM
+        if key == arcade.key.PAGEUP:
+            self.spn[0] -= ADD_ZOOM
+            self.spn[1] -= ADD_ZOOM
 
         if self.spn[0] <= 1:
             self.spn = 1
-        elif self.spn[0] >= 70:
-            self.spn = 70
+        elif self.spn[0] >= 40:
+            self.spn = 40
         
         if self.spn[1] <= 1:
             self.spn = 1
-        elif self.spn[1] >= 70:
-            self.spn = 70
+        elif self.spn[1] >= 40:
+            self.spn = 40
             
         os.remove(MAP_FILE)
         self.get_image()
