@@ -54,10 +54,10 @@ class GameView(arcade.Window):
         self.background = arcade.load_texture(MAP_FILE)
 
     def on_key_press(self, key, modifiers):
-        if key == arcade.key.UP:
+        if key == arcade.key.PAGEUP:
             self.spn[0] += 1
             self.spn[1] += 1
-        if key == arcade.key.DOWN:
+        if key == arcade.key.PAGEDOWN:
             self.spn[0] -= 1
             self.spn[1] -= 1
 
