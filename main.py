@@ -53,9 +53,11 @@ class GameView(arcade.Window):
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.PgUp:
-            self.spn[0], self.spn[1] += 1, 1
+            self.spn[0] += 1
+            self.spn[1] += 1
         if key == arcade.key.PgDown:
-            self.spn[0], self.spn[1] -= 1, 1
+            self.spn[0] -= 1
+            self.spn[1] -= 1
         self.get_image()
 
 def main():
