@@ -83,13 +83,13 @@ class GameView(arcade.Window):
     def on_key_press(self, key, modifiers):
         self.keys_pressed.add(key)
         
-        if arcade.key.LEFT in self.keys_pressed or arcade.key.A in self.keys_pressed:
+        if arcade.key.LEFT in self.keys_pressed:
             self.lon -= self.spn[0]
-        if arcade.key.RIGHT in self.keys_pressed or arcade.key.D in self.keys_pressed:
+        if arcade.key.RIGHT in self.keys_pressed:
             self.lon += self.spn[0]
-        if arcade.key.UP in self.keys_pressed or arcade.key.W in self.keys_pressed:
+        if arcade.key.UP in self.keys_pressed:
             self.lat += self.spn[1]
-        if arcade.key.DOWN in self.keys_pressed or arcade.key.S in self.keys_pressed:
+        if arcade.key.DOWN in self.keys_pressed:
             self.lat -= self.spn[1]
         
         if arcade.key.PAGEDOWN in self.keys_pressed:
