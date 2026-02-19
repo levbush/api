@@ -2,6 +2,8 @@ import os
 import sys
 import requests
 import arcade
+from config import STATIC_API_KEY, GEOCODER_API_KEY
+
 
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
@@ -31,6 +33,8 @@ class GameView(arcade.Window):
     def get_image(self):
         server_address = 'https://static-maps.yandex.ru/v1?'
         api_key = '0680ad62-62c5-40bb-93fe-f72f890c42df'
+        self.lon = input("Введите lon: ")
+        self.lat = input("Введите lat: ")
         self.spn = [60, 40]
         ll_spn = f'll={self.lon},{self.lat}&spn={self.spn[0]},{self.spn[1]}'
         # Готовим запрос.
