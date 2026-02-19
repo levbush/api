@@ -77,14 +77,13 @@ class GameView(arcade.Window):
         self.background = arcade.load_texture(MAP_FILE)
 
     def on_key_press(self, key, modifiers):
-        self.keys_pressed.add(key)
-        if arcade.key.LEFT in self.keys_pressed or arcade.key.A in self.keys_pressed:
+        if arcade.key.LEFT == key or arcade.key.A == key:
             self.lon -= STEP
-        if arcade.key.RIGHT in self.keys_pressed or arcade.key.D in self.keys_pressed:
+        if arcade.key.RIGHT == key or arcade.key.D == key:
             self.lon += STEP
-        if arcade.key.UP in self.keys_pressed or arcade.key.W in self.keys_pressed:
+        if arcade.key.UP == key or arcade.key.W == key:
             self.lat += STEP
-        if arcade.key.DOWN in self.keys_pressed or arcade.key.S in self.keys_pressed:
+        if arcade.key.DOWN == key or arcade.key.S == key:
             self.lat -= STEP
         
         if arcade.key.PAGEDOWN in self.keys_pressed:
