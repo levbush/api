@@ -1,5 +1,4 @@
 import os
-import sys
 import requests
 import arcade
 from config import STATIC_API_KEY, GEOCODER_API_KEY
@@ -42,6 +41,7 @@ class GameView(arcade.Window):
         self.theme_white = True
         self.maptypes = ['map', 'driving', 'transit', 'admin']
         self.curr_maptype = 0
+        self.pt = []
 
     def setup(self):
         self.keys_pressed = set()
@@ -69,7 +69,8 @@ class GameView(arcade.Window):
             'theme': 'light' if self.theme_white else 'dark',
             'maptype': self.maptypes[self.curr_maptype],
             'size': '450,450',
-            'lang': 'ru_RU'
+            'lang': 'ru_RU',
+            'pt': '~'.join(self.pt)
         }
 
         response = requests.get(server_address, params=params)
@@ -79,7 +80,7 @@ class GameView(arcade.Window):
             print("Ошибка выполнения запроса:")
             print(response.url)
             print("Http статус:", response.status_code, "(", response.reason, ")")
-            sys.exit(1)
+            self.close()
 
         # Запишем полученное изображение в файл.
         with open(MAP_FILE, "wb") as file:
@@ -119,7 +120,8 @@ class GameView(arcade.Window):
             self.spn[1] = 40
 
         if key == arcade.key.ENTER and self.search_query_area.text:
-            self.lon, self.lat, self.spn = self.get_ll_spn(self.search_query_area.text)
+            self.lon, self.lat, self.spn, pt = self.get_ll_spn(self.search_query_area.text)
+            self.pt = [pt] if pt else []
             
         self.get_image()
 
@@ -130,12 +132,12 @@ class GameView(arcade.Window):
         response = requests.get(server_address, params={'geocode': geocode, 'apikey': api_key, 'format': 'json', 'results': 1})
 
         if response.status_code != 200:
-            return self.lon, self.lat
+            return self.lon, self.lat, self.spn, ''
         data = response.json()
         if not data['response']['GeoObjectCollection']['metaDataProperty']['GeocoderResponseMetaData']['found']:
-            return self.lon, self.lat
+            return self.lon, self.lat, self.spn, ''
         toponym = data['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']
-        return *map(float, toponym['Point']['pos'].split()), self.toponym_to_spn(toponym)
+        return *map(float, toponym['Point']['pos'].split()), self.toponym_to_spn(toponym), toponym['Point']['pos'].replace(' ', ',') + ',pm2dgm'
 
     def on_key_release(self, key, modifiers):
         if key in self.keys_pressed:
